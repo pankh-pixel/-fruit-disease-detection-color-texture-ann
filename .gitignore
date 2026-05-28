@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Data & Models (large files — use DVC or Git LFS)
+data/raw/
+data/processed/
+models/checkpoints/
+*.keras
+*.h5
+*.pkl
+
+# Logs & Outputs
+logs/
+mlruns/
+wandb/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,61 @@
+project:
+  name: "FruitDiseaseDetection"
+  version: "3.0.0"
+  seed: 42
+
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  image_size: [128, 128]
+  color_mode: "rgb"
+  test_split: 0.20      # 80 test images  (20 per class)
+  val_split: 0.10       # 40 val images   (10 per class)
+  augmentation: true
+
+features:
+  color_histogram:
+    bins: 32
+    normalize: true
+  glcm:
+    distances: [1, 2, 3]
+    angles: [0, 0.785, 1.571, 2.356]
+    properties: ["contrast", "dissimilarity", "homogeneity", "energy", "correlation", "ASM"]
+    symmetric: true
+    normed: true
+
+model:
+  architecture: "ANN+Ensemble"
+  # Smaller network = better for 100-image datasets (less overfitting)
+  hidden_layers: [256, 128, 64, 32]
+  activation: "relu"
+  dropout_rate: 0.25
+  batch_normalization: true
+  output_activation: "softmax"
+
+training:
+  epochs: 200
+  batch_size: 32
+  learning_rate: 0.0005   # lower LR = more stable on small data
+  optimizer: "adam"
+  loss: "categorical_crossentropy"
+  early_stopping:
+    monitor: "val_loss"
+    patience: 25           # more patience for small dataset
+    restore_best_weights: true
+  reduce_lr:
+    monitor: "val_loss"
+    factor: 0.5
+    patience: 10
+    min_lr: 0.000001
+
+logging:
+  backend: "none"
+  experiment_name: "fruit-disease-v3"
+  run_name: null
+  log_model: false
+  log_artifacts: false
+
+paths:
+  model_dir: "models"
+  log_dir: "logs"
+  checkpoint_path: "models/checkpoints/best_model.keras"
